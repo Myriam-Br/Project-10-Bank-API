@@ -32,7 +32,7 @@ module.exports.getUserProfile = async serviceData => {
     const jwtToken = serviceData.headers.authorization.split('Bearer')[1].trim()
     const decodedJwtToken = jwt.decode(jwtToken)
     const user = await User.findOne({ _id: decodedJwtToken.id })
-
+ 
     if (!user) {
       throw new Error('User not found!')
     }
@@ -45,9 +45,10 @@ module.exports.getUserProfile = async serviceData => {
 }
 
 module.exports.loginUser = async serviceData => {
+
   try {
     const user = await User.findOne({ email: serviceData.email })
-
+    
     if (!user) {
       throw new Error('User not found!')
     }
