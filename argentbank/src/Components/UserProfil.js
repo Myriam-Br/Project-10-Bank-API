@@ -8,7 +8,7 @@ import axios from "axios";
 function UserProfil() {
   const dispatch = useDispatch()
   const [userName, setUserName] = useState(null)
-
+  const [edit, setEdit] = useState(false);
 
   const token = useSelector(state => state.auth.value.token)
   useEffect(() => {
@@ -26,13 +26,16 @@ function UserProfil() {
   })
 
   const lastName = useSelector(state => state.user.value.lastName)
-
+  const firstName = useSelector(state => state.user.value.firstName)
+  
   function handleEditName() {
+    setEdit(!edit)
+
     axios.put('http://localhost:3001/api/v1/user/profile', {firstName: userName, lastName: lastName}, {
       headers: {
         'Authorization': 'Bearer' + ' ' + token
       },
-     })
+    })
     .then ((res) => {
       console.log(res);
       dispatch(updateName({firstName:res.data.body.firstName, lastName: res.data.body.lastName, id: res.data.body.id, status:  res.data.status, message : res.data.message }))
@@ -42,15 +45,17 @@ function UserProfil() {
   } 
 
 
-  const firstName = useSelector(state => state.user.value.firstName)
 
   return  <div className="header">
-      <h1>Welcome back<br/>{firstName}</h1>
+    {edit ? (
       <div>
         <label htmlFor="userName">New Username</label>
         <input type="text" id="userName"  onChange={(e) => setUserName(e.target.value)} />
       </div>
-      <button className="edit-button" type="submit" onClick={() => handleEditName()}>Edit Name</button>
+      ): (
+       <h1>Welcome back<br/>{firstName}</h1>
+      )}
+     <button className="edit-button" type="submit" onClick={() => handleEditName()}>Edit Name</button>     
     </div>
 }
 
