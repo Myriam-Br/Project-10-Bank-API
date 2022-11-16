@@ -22,7 +22,7 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Login'
-      produces:
+      produces: 
         - application/json
       responses:
         '200':

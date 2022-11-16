@@ -15,7 +15,8 @@ export const userSlice = createSlice({
             if(state.id === action.payload.id) {
                 return {
                     ...state,
-                    firstName : action.payload
+                    firstName : action.payload,
+                    lastName : action.payload,
                 } 
             }
             else{

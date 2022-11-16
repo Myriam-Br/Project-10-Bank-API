@@ -2,10 +2,8 @@ import React from "react";
 import UserProfil from "../Components/UserProfil";
 import Account from "../Components/Account";
 
-
 function Dashboard() {
 
-   
     // create object with all the transactions
     const transactions = [
         {
@@ -28,12 +26,15 @@ function Dashboard() {
         }
     ]
 
+
     return  <main className="main bg-dark">
-    <UserProfil/>
-    <h2 className="sr-only">Accounts</h2>
-    {transactions.map((transaction, index) =>{
-        return <Account key={index} title={transaction.title} currency={transaction.currency} amount={transaction.amount} description={transaction.description}/>
-    })}
+        <div>
+            <UserProfil/>
+            <h2 className="sr-only">Accounts</h2>
+            { transactions.map((transaction, index) =>{
+                return <Account key={index} title={transaction.title} currency={transaction.currency} amount={transaction.amount} description={transaction.description}/>
+            })}  
+        </div>     
   </main>
 }
 

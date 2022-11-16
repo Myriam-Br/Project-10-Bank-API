@@ -7,10 +7,11 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 import Home from '../src/Pages/Home';
 import SignIn from './Pages/SignIn';
-import Dashboard from './Pages/Dashboard';
 import NoPage from './Pages/NoPage';
+import RequireAuth from './Pages/PrivateRoutes';
 import { Provider } from 'react-redux';
-import store from "../src/features/store"
+import store from "../src/Features/store"
+import Dashboard from './Pages/Dashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,8 +21,8 @@ root.render(
     <Header/>
     <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path='/profil' element={ <RequireAuth><Dashboard /></RequireAuth> }/>
         <Route path="*" element={<NoPage />} />
     </Routes>
     <Footer/>
