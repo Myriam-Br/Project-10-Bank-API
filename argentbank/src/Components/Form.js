@@ -5,79 +5,51 @@ import { useNavigate } from "react-router-dom";
 import { login, pending, rememberMe, loginFailed } from "../Features/AuthSlice";
 import { checkInput } from "../Features/FormLogin";
 import { validateEmail, error } from "../Features/CheckInput";
-import { loginUser } from "../API/ApiServices";
+import { userLogin } from "../API/ApiCalls";
 
 function Form() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-//validate input
+
+    //validate input
     function validator(value, input) { 
       const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-      switch(input){
-        case 'email':
-        dispatch(checkInput({email: validateEmail(value, regexEmail.test(value)), password:password}))
-        break
-        case 'password':
-        dispatch(checkInput({email: email, password: value}))
-        break
-        default:
-          console.log("input doesn't exist");
-    } 
-  }
-  const email = useSelector(state => state.formLogin.value.email)
-  const password = useSelector(state => state.formLogin.value.password)
-
-  const {isRemembered } = useSelector((state) => state.auth)
-  const {isFailed} = useSelector((state) => state.auth)
-  console.log('REMEMBER ME: ',isRemembered);
-  console.log('ERROR : ',isFailed);
-  
-    //post request
-    async function userLogin(email, password) {
-        console.log(email, password);
-        return new Promise(async (resolve, reject) => {
-        try {
-            const res = await loginUser({email, password})
-            const token = res.data.body.token
-            console.log(token);
-            resolve(token)
-        } catch (error) {
-            reject(error)
-        }
-        })
+        switch(input){
+            case 'email':
+            dispatch(checkInput({email: validateEmail(value, regexEmail.test(value)), password:password}))
+            break
+            case 'password':
+            dispatch(checkInput({email: email, password: value}))
+            break
+            default:
+            console.log("input doesn't exist");
+        } 
     }
-  
+    const email = useSelector(state => state.formLogin.value.email)
+    const password = useSelector(state => state.formLogin.value.password)
+
+    const {isRemembered } = useSelector((state) => state.auth)
+    const {isFailed} = useSelector((state) => state.auth)
+
     async function submitForm(e) { 
         e.preventDefault()
         dispatch(pending())
         try {
-          const token = await userLogin(email, password)
-          if (rememberMe) {
+            const token = await userLogin(email, password)
+            
+            if (rememberMe) {
             localStorage.setItem('token', token)
-          } else {
+            } else {
             localStorage.removeItem('token')
-          }
+            }
+            dispatch(login())
+            dispatch(loginFailed(''))
+            navigate('/profil')
 
-          dispatch(login())
-          dispatch(loginFailed(''))
-          navigate('/profil')
-
-        } catch (err) {
+        }catch (err) {
             dispatch(loginFailed('Check your email and password'))
         }
-
-  
     }
-
-
-    /*axios.post('http://localhost:3001/api/v1/user/login', { email : email, password : password })
-    .then((res) => {
-        console.log(res);
-        dispatch(login({token: res.data.body.token, status: res.data.status, message : res.data.message}))   
-    })
-    .catch(err => console.log(err))    
-    
-    navigate('/profil')*/
 
     return( 
         <form onSubmit={submitForm}>

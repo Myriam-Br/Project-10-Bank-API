@@ -6,15 +6,6 @@
       return 'undefined'
     }
   }
-/*
-export function validatPwd(value) {
-    if(value === 'password123') {
-    return value
-    }else{
-        return 'undefined'
-    }
-}*/
-
 
 export function error(value, input) {
   if(value === 'undefined') {
