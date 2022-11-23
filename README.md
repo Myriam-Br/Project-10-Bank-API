@@ -42,7 +42,7 @@ Your server should now be running at http://locahost:3001 and you will now have 
 
 # Start Application : 
 
-#Access argentbank application folder
+# Access argentbank application folder
 cd argentBank
 
 ## Install dependencies
